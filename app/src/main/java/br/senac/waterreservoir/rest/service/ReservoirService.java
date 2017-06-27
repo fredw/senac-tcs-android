@@ -7,5 +7,5 @@ import retrofit2.http.GET;
 
 public interface ReservoirService {
     @GET("/reservoirs")
-    Call<JsonObject> signIn();
+    Call<JsonObject> index();
 }

@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
+import br.senac.waterreservoir.Application;
 import br.senac.waterreservoir.R;
 import br.senac.waterreservoir.rest.RestClient;
 import br.senac.waterreservoir.rest.service.UserService;
@@ -173,8 +174,8 @@ public class LoginActivity extends AppCompatActivity {
                     Context context = getApplicationContext();
                     switch (response.code()) {
                         case 200:
-                            // Store authorization header on shared preferentes
-                            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+                            // Store authorization header on shared preferences
+                            SharedPreferences settings = getSharedPreferences(Application.SHARED_PREFERENCE, 0);
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putString("token", response.headers().get("Authorization"));
                             editor.apply();
