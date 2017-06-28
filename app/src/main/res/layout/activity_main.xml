@@ -17,11 +17,28 @@
         android:layout_alignParentStart="true" />
 
     <Spinner
+        android:id="@+id/reservoirSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/reservoirSpinner"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/reservoirLabel"
-        android:layout_alignParentStart="true"/>
+        android:spinnerMode="dialog" />
+
+    <TextView
+        android:text="Dispositivos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/devicesLabel"
+        android:layout_below="@+id/reservoirSpinner"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/deviceSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/devicesLabel"
+        android:spinnerMode="dialog" />
 
     <Button
         android:text="Share"

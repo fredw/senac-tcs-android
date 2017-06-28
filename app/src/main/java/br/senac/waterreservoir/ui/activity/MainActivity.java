@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import java.util.List;
 import br.senac.waterreservoir.R;
 import br.senac.waterreservoir.model.Reservoir;
 import br.senac.waterreservoir.rest.RestClient;
+import br.senac.waterreservoir.rest.service.DeviceService;
 import br.senac.waterreservoir.rest.service.ReservoirService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
                     for (JsonElement r : data) {
                         JsonObject reservoir = r.getAsJsonObject();
                         reservoirs.add(new Reservoir(
-                            reservoir.get("id").toString(),
-                            reservoir.getAsJsonObject("attributes").get("name").toString()
+                            reservoir.get("id").getAsString(),
+                            reservoir.getAsJsonObject("attributes").get("name").getAsString()
                         ));
                     }
 
@@ -72,7 +74,39 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Reservoir reservoir = (Reservoir) parent.getSelectedItem();
                 // @TODO: fazer algo com o valor seelecionado do spinner
-                Toast.makeText(getApplicationContext(), reservoir.getId() + "#" + reservoir.getName(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), reservoir.getId() + "#" + reservoir.getName(), Toast.LENGTH_LONG).show();
+
+                // Get devices
+                DeviceService auth = RestClient.getClient(getBaseContext()).create(DeviceService.class);
+                auth.index(reservoir.getId()).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_LONG).show();
+
+//                            JsonArray data = response.body().getAsJsonArray("data");
+//
+//                            // Read json data and populate on array
+//                            List<Reservoir> reservoirs = new ArrayList<>();
+//                            for (JsonElement r : data) {
+//                                JsonObject reservoir = r.getAsJsonObject();
+//                                reservoirs.add(new Reservoir(
+//                                        reservoir.get("id").getAsString(),
+//                                        reservoir.getAsJsonObject("attributes").get("name").getAsString()
+//                                ));
+//                            }
+//
+//                            // Populate spinner with the array adapter
+//                            ArrayAdapter<Reservoir> spinnerArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, reservoirs);
+//                            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            reservoirSpinner.setAdapter(spinnerArrayAdapter);
+                        }
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
