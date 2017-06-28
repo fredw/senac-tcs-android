@@ -13,7 +13,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
@@ -96,6 +95,12 @@ public class LoginActivity extends AppCompatActivity {
         b = getCroppedBitmap(b);
         ImageView img = (ImageView) findViewById(R.id.image);
         img.setImageBitmap(b);
+
+        // Clear authorization header on shared preferences
+        SharedPreferences settings = getSharedPreferences(Application.SHARED_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove("token");
+        editor.apply();
     }
 
     /**
@@ -167,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
             user.addProperty("password", password);
             data.add("user", user);
 
-            UserService auth = RestClient.getClient().create(UserService.class);
+            UserService auth = RestClient.getClient(this).create(UserService.class);
             auth.signIn(data).enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -175,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                     switch (response.code()) {
                         case 200:
                             // Store authorization header on shared preferences
-                            SharedPreferences settings = getSharedPreferences(Application.SHARED_PREFERENCE, 0);
+                            SharedPreferences settings = getSharedPreferences(Application.SHARED_PREFERENCE, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putString("token", response.headers().get("Authorization"));
                             editor.apply();
@@ -239,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
             user.addProperty("email", email);
             data.add("user", user);
 
-            UserService auth = RestClient.getClient().create(UserService.class);
+            UserService auth = RestClient.getClient(this).create(UserService.class);
             auth.passwordRecover(data).enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
