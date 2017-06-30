@@ -13,5 +13,15 @@
     <string name="error_field_required">This field is required</string>
 
     <!-- Main -->
+    <string name="reservoirs">Reservoirs</string>
+    <string name="devices">Devices</string>
+    <string name="last_measurements">Last measurements</string>
+    <string name="share">Share</string>
+    <string name="meter_cubic">m&#179;</string>
+    <string name="liter_per_minute">L/m</string>
+    <string name="menu">Menu</string>
+    <string name="level_sensor">Level Sensor</string>
+    <string name="flow_sensor">Flow Sensor</string>
+    <string name="data_nothing">-</string>
 
 </resources>

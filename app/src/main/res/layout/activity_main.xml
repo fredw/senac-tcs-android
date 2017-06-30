@@ -1,148 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.senac.waterreservoir.ui.activity.MainActivity"
+    android:background="@color/colorBackground"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context="br.senac.waterreservoir.ui.activity.MainActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:text="Reservatórios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/reservoirLabel"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:id="@+id/reservoirSpinner"
+    <RelativeLayout
+        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/reservoirLabel"
-        android:spinnerMode="dialog" />
+        android:layout_margin="20dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:text="Dispositivos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/devicesLabel"
-        android:layout_below="@+id/reservoirSpinner"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:text="@string/reservoirs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reservoirLabel"
+            android:layout_alignParentStart="true" />
 
-    <Spinner
-        android:id="@+id/deviceSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/devicesLabel"
-        android:spinnerMode="dialog" />
+        <Spinner
+            android:id="@+id/reservoirSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/reservoirLabel"
+            android:minHeight="35dp"
+            android:spinnerMode="dialog" />
 
-    <Button
-        android:text="Share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txShare"
-        android:onClick="share"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:text="@string/devices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/devicesLabel"
+            android:layout_below="@+id/reservoirSpinner"
+            android:layout_alignParentStart="true" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="300sp"
-        android:layout_above="@+id/txShare"
-        android:layout_alignParentStart="true">
+        <Spinner
+            android:id="@+id/deviceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/devicesLabel"
+            android:minHeight="35dp"
+            android:spinnerMode="dialog" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/lastMeasurements"
             android:gravity="center"
-            android:text="Últimas Medições"
+            android:text="@string/last_measurements"
             android:textSize="20sp"
+            android:layout_below="@+id/deviceSpinner"
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Sensor Flow (L/min)"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ruler (L)"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
+            android:layout_below="@+id/lastMeasurements"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp">
 
-            <TextView
-                android:id="@+id/sensorFlow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="10"
-                android:gravity="center"
-                android:textSize="50sp"/>
+            <!-- Level Sensor -->
 
-            <TextView
-                android:id="@+id/ruler"
-                android:layout_width="0dp"
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="7"
-                android:gravity="center"
-                android:textSize="50sp"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="15dp"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="2dp">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    style="?android:attr/actionOverflowButtonStyle"
+                    android:onClick="showPopup"
+                    android:contentDescription="@string/menu" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/levelSensorIcon"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/level_sensor"
+                        android:minWidth="100dp"
+                        android:minHeight="100dp"
+                        android:src="@drawable/ic_assessment_black_24dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/levelSensorLabel"
+                        android:layout_toEndOf="@+id/levelSensorIcon"
+                        android:layout_alignParentTop="true"
+                        android:textSize="17sp"
+                        android:text="@string/level_sensor"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/levelSensorDataLayout"
+                        android:layout_toEndOf="@+id/levelSensorIcon"
+                        android:layout_below="@+id/levelSensorLabel"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/levelSensorData"
+                            android:text="@string/data_nothing"
+                            android:textSize="45sp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/levelSensorUnit"
+                            android:text="@string/meter_cubic"
+                            android:textSize="25sp"
+                            android:layout_marginStart="5dp"
+                            android:visibility="invisible"
+                            />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/levelSensorDataLayout"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/levelSensorIcon"
+                        android:text="@string/share" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Flow Sensor -->
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="15dp"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="2dp">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    style="?android:attr/actionOverflowButtonStyle"
+                    android:onClick="showPopup"
+                    android:contentDescription="@string/menu" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/flowSensorIcon"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/flow_sensor"
+                        android:minWidth="100dp"
+                        android:minHeight="100dp"
+                        android:src="@drawable/ic_cached_black_24dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/flowSensorLabel"
+                        android:layout_toEndOf="@+id/flowSensorIcon"
+                        android:layout_alignParentTop="true"
+                        android:textSize="17sp"
+                        android:text="@string/flow_sensor"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/flowSensorDataLayout"
+                        android:layout_toEndOf="@+id/flowSensorIcon"
+                        android:layout_below="@+id/flowSensorLabel"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/flowSensorData"
+                            android:text="@string/data_nothing"
+                            android:textSize="45sp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/flowSensorUnit"
+                            android:text="@string/liter_per_minute"
+                            android:textSize="25sp"
+                            android:layout_marginStart="5dp"
+                            android:visibility="invisible"
+                            />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/flowSensorDataLayout"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/flowSensorIcon"
+                        android:text="@string/share" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    </RelativeLayout>
 
-    </LinearLayout>
-
-    <!--android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        card_view:cardCornerRadius="5dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="72323"
-            android:gravity="center"
-            android:textSize="50dp"/>
-
-    </android.support.v7.widget.CardView-->
-
-</RelativeLayout>
+</ScrollView>
