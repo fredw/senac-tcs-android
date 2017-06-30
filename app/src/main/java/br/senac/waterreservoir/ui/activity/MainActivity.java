@@ -1,11 +1,16 @@
 package br.senac.waterreservoir.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,10 +42,16 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    private View loadingView;
+    private View mainContentView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadingView = findViewById(R.id.loading);
+        mainContentView = findViewById(R.id.main_content);
 
         // Reservoir spinner
         final Spinner reservoirSpinner = (Spinner) findViewById(R.id.reservoirSpinner);
@@ -232,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFlowSensorConsumption(Double consumption) {
-        //Toast.makeText(getApplicationContext(), "Consumo: " + consumption.toString(), Toast.LENGTH_LONG).show();
         TextView dataTextView = (TextView) findViewById(R.id.flowSensorData);
         TextView unitTextView = (TextView) findViewById(R.id.flowSensorUnit);
         if (consumption == null) {
@@ -240,13 +250,11 @@ public class MainActivity extends AppCompatActivity {
             unitTextView.setVisibility(View.INVISIBLE);
         } else {
             dataTextView.setText(new DecimalFormat("#.##").format(consumption));
-            unitTextView.setVisibility(View.INVISIBLE);
+            unitTextView.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void setLevelSensorVolume(Double volume) {
-        //Toast.makeText(getApplicationContext(), "Nivel: " + volume.toString(), Toast.LENGTH_LONG).show();
         TextView dataTextView = (TextView) findViewById(R.id.levelSensorData);
         TextView unitTextView = (TextView) findViewById(R.id.levelSensorUnit);
         if (volume == null) {
@@ -254,27 +262,74 @@ public class MainActivity extends AppCompatActivity {
             unitTextView.setVisibility(View.INVISIBLE);
         } else {
             dataTextView.setText(new DecimalFormat("#.##").format(volume));
-            unitTextView.setVisibility(View.INVISIBLE);
+            unitTextView.setVisibility(View.VISIBLE);
         }
     }
 
-    public void showPopup(View v) {
+    public void showPopupFlowSensor(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.actions, popup.getMenu());
+        inflater.inflate(R.menu.flow_sensor_actions, popup.getMenu());
         popup.show();
     }
 
-    public void share(View view) {
-        /*Intent sendIntent = new Intent();
+    public void showPopupLevelSensor(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.level_sensor_actions, popup.getMenu());
+        popup.show();
+    }
+
+    public void share(MenuItem item) {
+        String text = "";
+        TextView dataTextView;
+        switch (item.getItemId()) {
+            case R.id.action_flow_sensor:
+                dataTextView = (TextView) findViewById(R.id.flowSensorData);
+                text = "Flow rate: " + dataTextView.getText().toString() + " " + getResources().getString(R.string.liter_per_minute);
+                break;
+            case R.id.action_level_sensor:
+                dataTextView = (TextView) findViewById(R.id.levelSensorData);
+                text = "Level: " + dataTextView.getText().toString() + " " + getResources().getString(R.string.meter_cubic);
+                break;
+        }
+
+        Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        TextView sensorFlow = (TextView) findViewById(R.id.sensorFlow);
-        TextView ruler = (TextView) findViewById(R.id.ruler);
-
-        String text = "Vazão: " + sensorFlow.getText().toString() + "l/min Régua: " + ruler.getText().toString() + "l";
-
         sendIntent.putExtra(Intent.EXTRA_TEXT, text);
         sendIntent.setType("text/plain");
-        startActivity(sendIntent);*/
+        startActivity(sendIntent);
+    }
+
+    /*
+     * Shows the progress UI and hides main information
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showLoading(final boolean show) {
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        mainContentView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mainContentView
+                .animate()
+                .setDuration(shortAnimTime)
+                .alpha(show ? 0 : 1)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                    mainContentView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    }
+                });
+
+        loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+        loadingView
+                .animate()
+                .setDuration(shortAnimTime)
+                .alpha(show ? 1 : 0)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                    loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    }
+                });
     }
 }

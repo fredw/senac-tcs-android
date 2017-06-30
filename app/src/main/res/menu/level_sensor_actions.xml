@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_level_sensor"
+        android:orderInCategory="100"
+        android:title="@string/share"
+        android:onClick="share"
+        app:showAsAction="never"/>
+
+</menu>
